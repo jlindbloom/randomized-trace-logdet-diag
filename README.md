@@ -1,5 +1,5 @@
 # randomized-trace-logdet
-Some Python implementations of randomized, matrix-free algorithms for computing matrix traces and log determinants.
+Some Python implementations of randomized, matrix-free algorithms for estimating $\text{tr}(A)$, $\log \det(A)$, and $\text{diag}(A^{-1})$. Here $A$ is SPD or SPSD.
 
 
 ## References
