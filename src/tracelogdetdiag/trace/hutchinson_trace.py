@@ -10,6 +10,9 @@ def hutchinson_trace(A, sample_size=100, block_size=20, method="rademacher", exa
     computed with a slightly larger sample size than specified, unless exact_sample_size=True.
     """
 
+    # Get shape
+    n = A.shape[0]
+
     valid_methods = ["standard_gaussian", "rademacher"]
     assert method in valid_methods, f"method must be one of {valid_methods}"
 
