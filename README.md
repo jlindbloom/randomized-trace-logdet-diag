@@ -1,5 +1,5 @@
-# randomized-trace-logdet-diaginv
-Some Python implementations of randomized, matrix-free algorithms for estimating $\text{tr}(A)$, $\log \det(A)$, and $\text{diag}(A^{-1})$. Here $A$ is SPD or SPSD.
+# randomized-trace-logdet-diag-diaginv
+Some Python implementations of randomized, matrix-free algorithms for estimating $\text{tr}(A)$, $\log \det(A)$, $\text{diag}(A)$, and $\text{diag}(A^{-1})$. Here $A$ is SPD or SPSD.
 
 
 ## References
