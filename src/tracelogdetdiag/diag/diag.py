@@ -3,7 +3,7 @@ import numpy as np
 
 
 def naive_diag(A, sample_size=1000):
-    """Naive unbiased estimator for the diagonal of a matrix, see [5].
+    """Naive unbiased estimator for the diagonal of a matrix, see [5]. A must be SPSD.
     """
 
     # Get shape
