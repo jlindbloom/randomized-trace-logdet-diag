@@ -115,6 +115,7 @@ def hutch_plus_plus_epsilon_delta_trace(A, epsilon=0.05, delta=0.05, method="rad
     assert method in valid_methods, f"method must be one of {valid_methods}"
 
     sample_size = int( np.ceil( (np.sqrt(np.log(1/delta))/epsilon) + np.log(1/delta) ) )
+    sample_size = int(3*np.ceil(sample_size/3))
 
     return hutch_plus_plus_trace(A, sample_size=sample_size, method=method)
 
