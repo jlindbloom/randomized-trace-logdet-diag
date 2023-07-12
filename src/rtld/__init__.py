@@ -1,7 +1,7 @@
-from .hutchinson_trace import hutchinson_trace, hutchinson_epsilon_delta_trace
-
-
-
-
-
-
+# Check if cupy is installed or not
+CUPY_INSTALLED = False
+try:
+    import cupy
+    CUPY_INSTALLED = True
+except:
+    pass
