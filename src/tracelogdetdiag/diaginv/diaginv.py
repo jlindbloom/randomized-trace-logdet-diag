@@ -48,11 +48,3 @@ def naive_diaginv(A, sample_size=1000, method="cholesky"):
 
 
 
-
-
-
-
-
-
-
-

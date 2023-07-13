@@ -36,7 +36,7 @@ def hutchinson_trace(A, sample_size=100, block_size=20, method="rademacher", exa
             w = w[:,:-extra_samples]
         
         # Append block sum
-        block_sum = np.sum( ( w.T.dot(A)*w.T).sum(axis=1) )
+        block_sum = np.sum( ( (A.T @ w).T * w.T ).sum(axis=1)  )
         block_sums.append(block_sum)
 
     tot_sum = np.sum(block_sums)

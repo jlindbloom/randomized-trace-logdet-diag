@@ -3,7 +3,7 @@ import numpy as np
 
 
 def explicit_diag_probe(A):
-    """Computes the diagonal of A using an explicit probe. Requires exactly n matvecs and rmatvecs with A.
+    """Computes the diagonal of A using an explicit probe. Requires exactly n matvecs with A.
     """
 
     # Setup
@@ -17,6 +17,6 @@ def explicit_diag_probe(A):
         w[j] = 1.0
 
         # Compute w^T A w
-        diagonal[j] = w.T @ A @ w
+        diagonal[j] = w.T @ (A @ w)
 
     return diagonal

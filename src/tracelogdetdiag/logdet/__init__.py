@@ -1,1 +1,3 @@
 from .explicit import logdet_via_cholesky
+from .util import evaluate_ith_chebyshev_polynomial, get_chebyshev_coeff
+from .stochastic_chebyshev import logdet_stochastic_chebyshev_approx, logdet_stochastic_chebyshev_epsilon_delta_approx
