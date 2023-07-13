@@ -1,8 +1,9 @@
 # randomized-trace-logdet-diag-diaginv
 Some Python implementations of randomized, matrix-free algorithms for estimating $\text{tr}(A)$, $\log \det(A)$, $\text{diag}(A)$, and $\text{diag}(A^{-1})$. Here $A$ is SPD or SPSD. We also provide implementations of non-randomized methods requiring access to matrices for convenience.
 
-This package is a work-in-progress. The goal is to implement some of the algorithms detailed in the references below. 
+This package is a work-in-progress. The goal is to implement some of the algorithms detailed in the references below.
 
+Install with ``pip install tracelogdetdiag``.
 
 ## References
 
