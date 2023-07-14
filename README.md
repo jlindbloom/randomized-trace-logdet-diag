@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Some Python implementations of randomized, matrix-free algorithms for estimating $\text{tr}(A)$, $\log \det(A)$, $\text{diag}(A)$, and $\text{diag}(A^{-1})$. Here $A$ is SPD or SPSD. We also provide implementations of non-randomized methods requiring access to matrices for convenience.
+Some Python implementations of randomized, matrix-free algorithms for estimating $\text{tr}(A)$, $\text{tr}(A^{-1})$, $\log \det(A)$, $\text{diag}(A)$, $\text{diag}(A^{-1})$. Here $A$ is SPD or SPSD. We also provide implementations of non-randomized methods requiring access to matrices for convenience.
 
 This package is a work-in-progress. The goal is to implement some of the algorithms detailed in the references below.
 
