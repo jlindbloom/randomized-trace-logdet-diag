@@ -4,6 +4,7 @@ from scipy.sparse.linalg import eigs as scipy_eigs
 from .util import get_chebyshev_coeff
 
 
+
 def logdet_stochastic_chebyshev_approx(C, sigma_max=None, sigma_min=None, sample_size=100, chebyshev_n=14):
     """Computes an approximation to logdet(C) for a SPSD matrix C, using the 
     stochastic Chebyshev approximation detailed in [7]. Eigenvalues of C are assumed to lie in

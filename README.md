@@ -1,4 +1,5 @@
 # randomized-trace-logdet-diag-diaginv
+
 Some Python implementations of randomized, matrix-free algorithms for estimating $\text{tr}(A)$, $\log \det(A)$, $\text{diag}(A)$, and $\text{diag}(A^{-1})$. Here $A$ is SPD or SPSD. We also provide implementations of non-randomized methods requiring access to matrices for convenience.
 
 This package is a work-in-progress. The goal is to implement some of the algorithms detailed in the references below. 
@@ -25,5 +26,7 @@ This package is a work-in-progress. The goal is to implement some of the algorit
 <a id="9">[9]</a> Meyer, R.A., Musco, C., Musco, C., & Woodruff, D.P. (2020). Hutch++: Optimal Stochastic Trace Estimation. Proceedings of the SIAM Symposium on Simplicity in Algorithms, 2021, 142-155 .
 
 <a id="10">[10]</a> Persson, D., Cortinovis, A., & Kressner, D. (2021). Improved variants of the Hutch++ algorithm for trace estimation. SIAM J. Matrix Anal. Appl., 43, 1162-1185.
+
+<a id="11">[11]</a> Eric Hallman (2021). Faster stochastic trace estimation with a Chebyshev product identity. Applied Mathematics Letters, 120, 107246.
 
 

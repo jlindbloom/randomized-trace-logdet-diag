@@ -1,10 +1,4 @@
-
-
-
-
-
-
-
-
-
+numpy
+scipy
+setuptools==59.2.0
 

@@ -8,7 +8,7 @@ version = "0.0.1"
 authors = [
   { name="Jonathan Lindbloom", email="jonathan@lindbloom.com" },
 ]
-description = "Some implementations of randomized, matrix-free algorithms for estimating matrix traces, log determinants, diagonals, and diagonals of inverses."
+description = "Some implementations of randomized, matrix-free algorithms for estimating matrix traces, log determinants, diagonals, and diagonals of inverse."
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [
