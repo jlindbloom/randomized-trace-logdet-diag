@@ -20,5 +20,5 @@ classifiers = [
 keywords = ["linear algebra", "log determinant", "trace", "randomized estimators"]
 
 [project.urls]
-"Homepage" = "https://github.com/jlindbloom/randomized-trace-logdet-diag-diaginv"
-"Bug Tracker" = "https://github.com/jlindbloom/randomized-trace-logdet-diag-diaginv/issues"
+"Homepage" = "https://github.com/jlindbloom/randomized-trace-logdet-diag"
+"Bug Tracker" = "https://github.com/jlindbloom/randomized-trace-logdet-diag/issues"
