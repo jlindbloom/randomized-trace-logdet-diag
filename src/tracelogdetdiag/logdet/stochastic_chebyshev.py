@@ -3,6 +3,10 @@ from scipy.sparse.linalg import eigs as scipy_eigs
 
 from .util import get_chebyshev_coeff
 
+from .. import CUPY_INSTALLED
+if CUPY_INSTALLED:
+    import cupy as cp
+    from cupyx.scipy.sparse.linalg import LinearOperator as CuPyLinearOperator
 
 
 def logdet_stochastic_chebyshev_approx(C, sigma_max=None, sigma_min=None, sample_size=100, chebyshev_n=14):
@@ -16,12 +20,27 @@ def logdet_stochastic_chebyshev_approx(C, sigma_max=None, sigma_min=None, sample
     # Get dimension
     d = C.shape[0]
     
+    # Handle CuPy
+    if CUPY_INSTALLED:
+        if isinstance(C, CuPyLinearOperator):
+            xp = cp
+        else:
+            xp = np
+    else:
+        xp = np
+    
     if (sigma_max is None) and (sigma_min is None):
 
         # Get largest and smallest singular values
-        sigma_max, _ = scipy_eigs(C, k=1, which="LM")
-        sigma_min, _ = scipy_eigs(C, k=1, which="SM")
-        sigma_max, sigma_min = np.real(sigma_max[0]), np.real(sigma_min[0])
+        if xp == np:
+            sigma_max, _ = scipy_eigs(C, k=1, which="LM")
+            sigma_min, _ = scipy_eigs(C, k=1, which="SM")
+            sigma_max, sigma_min = np.real(sigma_max[0]), np.real(sigma_min[0])
+        else:
+            sigma_max, _ = cupy_eigsh(C, k=1, which="LM")
+            sigma_min, _ = cupy_eigsh(C, k=1, which="SA")
+            sigma_max, sigma_min = cp.real(sigma_max[0]), cp.real(sigma_min[0])
+            sigma_max, sigma_min = cp.asnumpy(sigma_max), cp.asnumpy(sigma_min) 
 
     # Scaling
     a = sigma_min + sigma_max
@@ -44,7 +63,7 @@ def logdet_stochastic_chebyshev_approx(C, sigma_max=None, sigma_min=None, sample
     for j in range(sample_size):
         
         # Draw random vector
-        v = np.random.choice([-1, 1], size=d)
+        v = xp.random.choice([-1, 1], size=d)
         u = chebyshev_coeffs[0]*v
 
         if chebyshev_n > 1:
@@ -64,9 +83,9 @@ def logdet_stochastic_chebyshev_approx(C, sigma_max=None, sigma_min=None, sample
                 w0 = w1
                 w1 = w2
         
-        logdet_estimate += (np.dot(v, u))/sample_size
+        logdet_estimate += (xp.dot(v, u))/sample_size
 
-    logdet_estimate += d*np.log(a)
+    logdet_estimate += d*xp.log(a)
 
     return logdet_estimate
 
