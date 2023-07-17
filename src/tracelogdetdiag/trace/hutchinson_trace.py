@@ -1,6 +1,11 @@
 import numpy as np
 from scipy.linalg import qr as scipy_qr
 
+from .. import CUPY_INSTALLED
+if CUPY_INSTALLED:
+    import cupy as cp
+    from cupyx.scipy.sparse.linalg import LinearOperator as CuPyLinearOperator
+
 
 
 def hutchinson_trace(A, sample_size=100, block_size=20, method="rademacher", exact_sample_size=False):
@@ -16,9 +21,18 @@ def hutchinson_trace(A, sample_size=100, block_size=20, method="rademacher", exa
 
     valid_methods = ["standard_gaussian", "rademacher"]
     assert method in valid_methods, f"method must be one of {valid_methods}"
+    
+    # Handle CuPy
+    if CUPY_INSTALLED:
+        if isinstance(A, CuPyLinearOperator):
+            xp = cp
+        else:
+            xp = np
+    else:
+        xp = np
 
     # Handle blocks
-    n_blocks = int(np.ceil(sample_size/block_size))
+    n_blocks = int(xp.ceil(sample_size/block_size))
     extra_samples = (block_size*n_blocks) - sample_size
 
     block_sums = []
@@ -26,9 +40,9 @@ def hutchinson_trace(A, sample_size=100, block_size=20, method="rademacher", exa
 
         # Draw random block of vectors
         if method == "standard_gaussian":
-            w = np.random.normal(size=(n, block_size))
+            w = xp.random.normal(size=(n, block_size))
         elif method == "rademacher":
-            w = np.random.choice([-1, 1], size=(n, block_size))
+            w = xp.random.choice([-1, 1], size=(n, block_size))
         else:
             raise NotImplementedError
         
@@ -36,10 +50,10 @@ def hutchinson_trace(A, sample_size=100, block_size=20, method="rademacher", exa
             w = w[:,:-extra_samples]
         
         # Append block sum
-        block_sum = np.sum( ( (A.T @ w).T * w.T ).sum(axis=1)  )
+        block_sum = xp.sum( ( (A.T @ w).T * w.T ).sum(axis=1)  )
         block_sums.append(block_sum)
 
-    tot_sum = np.sum(block_sums)
+    tot_sum = xp.sum(xp.asarray(block_sums))
     if exact_sample_size:
         estimate = tot_sum/sample_size
     else:
@@ -78,6 +92,15 @@ def hutch_plus_plus_trace(A, sample_size=30, method="rademacher"):
 
     # Get shape
     n = A.shape[0]
+    
+    # Handle CuPy
+    if CUPY_INSTALLED:
+        if isinstance(A, CuPyLinearOperator):
+            xp = cp
+        else:
+            xp = np
+    else:
+        xp = np
 
     valid_methods = ["standard_gaussian", "rademacher"]
     assert method in valid_methods, f"method must be one of {valid_methods}"
@@ -85,22 +108,25 @@ def hutch_plus_plus_trace(A, sample_size=30, method="rademacher"):
     assert sample_size % 3 == 0, "sample_size must be a multiple of 3."
     
     if method == "rademacher":
-        S = np.random.choice([-1, 1], size=(n, int(sample_size/3)))
-        G = np.random.choice([-1, 1], size=(n, int(sample_size/3)))
+        S = xp.random.choice([-1, 1], size=(n, int(sample_size/3)))
+        G = xp.random.choice([-1, 1], size=(n, int(sample_size/3)))
     elif method == "standard_gaussian":
-        S = np.random.normal(size=(n, int(sample_size/3)))
-        G = np.random.normal(size=(n, int(sample_size/3)))
+        S = xp.random.normal(size=(n, int(sample_size/3)))
+        G = xp.random.normal(size=(n, int(sample_size/3)))
     else:
         raise NotImplementedError
 
     # Do QR decomp
-    Q, _ = scipy_qr(A @ S, mode="economic")
+    if xp == np: 
+        Q, _ = scipy_qr(A @ S, mode="economic")
+    else:
+        Q, _ = cp.linalg.qr(A @ S, mode="reduced")
 
     # Compute approximate trace
-    term1 = np.trace(Q.T @ ( A @ Q ) )
+    term1 = xp.trace(Q.T @ ( A @ Q ) )
     tmp =  A @ ( G - ( Q @ ( Q.T @ G ) ) )
     tmp2 = G.T @ ( tmp - Q @ ( Q.T @ tmp ) )
-    term2 = (3/sample_size)*np.trace(tmp2)
+    term2 = (3/sample_size)*xp.trace(tmp2)
     trace_estimate = term1 + term2
     
     return trace_estimate

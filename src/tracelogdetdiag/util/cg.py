@@ -1,6 +1,11 @@
 import numpy as np
 
-
+from .. import CUPY_INSTALLED
+if CUPY_INSTALLED:
+    import cupy as cp
+    from cupyx.scipy.sparse.linalg import LinearOperator as CuPyLinearOperator
+    
+    
 
 def relative_resigual_cg(A, b, x0=None, eps=1e-8, maxits=1000):
     """Applies the conjugate gradient method for the solution of A x = b 
@@ -10,12 +15,21 @@ def relative_resigual_cg(A, b, x0=None, eps=1e-8, maxits=1000):
     # Figure out shape
     n = A.shape[0]
     
+    # Handle CuPy
+    if CUPY_INSTALLED:
+        if isinstance(A, CuPyLinearOperator):
+            xp = cp
+        else:
+            xp = np
+    else:
+        xp = np
+    
     # b norm
-    bnorm = np.linalg.norm(b)
+    bnorm = xp.linalg.norm(b)
     
     # Initialization
     if x0 is None:
-        x = np.ones(n)
+        x = xp.ones(n)
     else:
         x = x0
     
@@ -34,7 +48,7 @@ def relative_resigual_cg(A, b, x0=None, eps=1e-8, maxits=1000):
         r = rnew
         
         its += 1
-        residual_norm = np.linalg.norm( b - A.matvec( x ) )
+        residual_norm = xp.linalg.norm( b - A.matvec( x ) )
         rel_residual_norm = residual_norm/bnorm
         if rel_residual_norm < eps: 
             converged = True
